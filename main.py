@@ -59,7 +59,6 @@ def get_cached_result(text: str) -> str:
         
         if cached:
             logger.info(f"🎯 CACHE HIT: '{text}' -> '{cached.transformed_text}'")
-            logger.info(f"📖 DB RETRIEVAL: Found cached entry for '{text}'")
             return cached.transformed_text
         
         # Transform and cache
@@ -69,7 +68,6 @@ def get_cached_result(text: str) -> str:
         session.add(cache_entry)
         session.commit()
         logger.info(f"💾 CACHED: '{text}' -> '{result}'")
-        logger.info(f"💾 DB INSERT: Stored cache entry for '{text}'")
         
         return result
 
