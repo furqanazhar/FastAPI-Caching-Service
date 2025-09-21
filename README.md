@@ -7,7 +7,7 @@ A microservice built with FastAPI that provides caching functionality for string
 - **FastAPI Framework**: Modern, fast web framework for building APIs
 - **String Transformation Caching**: Caches transformer function results to minimize external service calls
 - **Payload Generation**: Creates interleaved payloads from two string lists
-- **Database Storage**: Uses SQLite/PostgreSQL for persistent caching
+- **Database Storage**: Uses local SQLite for persistent caching
 - **CLI Testing Tool**: Command-line interface for programmatic testing
 - **Docker Support**: Containerized for easy deployment
 
@@ -19,7 +19,7 @@ The service implements a caching mechanism for string transformation operations:
 2. **Transformation**: Strings are processed by a transformer function (simulating external service)
 3. **Interleaving**: Transformed strings are interleaved from both lists
 4. **Caching**: Results are cached to minimize transformer function calls
-5. **Storage**: Cached outcomes stored in SQLite/PostgreSQL database
+5. **Storage**: Cached outcomes stored in local SQLite database
 
 ## Quick Start
 
@@ -224,7 +224,7 @@ pytest tests/test_api.py
 - **Transformer Function**: Simulates external service calls for string transformation
 - **Cache Reuse**: Minimizes calls to transformer function by caching results
 - **Payload Deduplication**: Reuses payload identifiers for identical inputs
-- **Database Persistence**: Stores cached outcomes in SQLite/PostgreSQL
+- **Database Persistence**: Stores cached outcomes in local SQLite
 
 ### Technology Stack
 - **FastAPI**: Web framework for building APIs
