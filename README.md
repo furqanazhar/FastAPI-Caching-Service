@@ -25,7 +25,7 @@ The service implements a caching mechanism for string transformation operations:
 
 ### Prerequisites
 
-- Python 3.8+
+- Python 3.11
 - pip (Python package installer)
 - Docker (optional, for containerized deployment)
 
@@ -124,45 +124,77 @@ cache-cli --input test_data.json --output results.json
 cache-cli --json '{"list_1": ["test"], "list_2": ["data"]}' --repeat 5
 ```
 
+### Sample Input JSON Files
+
+**Basic Example:**
+```json
+{
+  "list_1": ["hello", "world", "test"],
+  "list_2": ["foo", "bar", "data"]
+}
+```
+
+**Single String Example:**
+```json
+{
+  "list_1": ["single"],
+  "list_2": ["string"]
+}
+```
+
+**Longer Example:**
+```json
+{
+  "list_1": ["first", "second", "third", "fourth", "fifth"],
+  "list_2": ["alpha", "beta", "gamma", "delta", "epsilon"]
+}
+```
+
+**Special Characters Example:**
+```json
+{
+  "list_1": ["hello world!", "test@123", "camelCase"],
+  "list_2": ["special chars", "numbers 456", "mixed_Case"]
+}
+```
+
+**Expected Output:**
+- Input: `["hello", "world"]` + `["foo", "bar"]`
+- Output: `"HELLO, FOO, WORLD, BAR"`
+
 ## Project Structure
 
 ```
 FastAPI-Caching-Service/
-├── main.py              # Main FastAPI application
-├── models.py            # SQLModel/SQLAlchemy models
-├── cache_service.py     # Caching logic and transformer function
+├── main.py              # Main FastAPI application with SQLModel
 ├── cli.py               # Command-line interface tool
 ├── requirements.txt     # Python dependencies
 ├── Dockerfile           # Docker configuration
-├── docker-compose.yml   # Docker Compose setup
-├── tests/               # Unit and integration tests
-│   ├── test_api.py
-│   ├── test_cache.py
-│   └── test_cli.py
+├── test_data.json       # Sample test data for CLI
+├── cache.db             # SQLite database (created at runtime)
+├── tests/               # Test suite
+│   ├── __init__.py      # Package marker
+│   ├── conftest.py      # Shared fixtures and configuration
+│   ├── test_transformer.py  # Transformer function tests
+│   ├── test_caching.py      # Caching logic tests
+│   ├── test_api.py          # API endpoint tests
+│   └── test_integration.py  # Integration tests
 ├── .gitignore          # Git ignore rules
 └── README.md           # This file
 ```
 
 ## Docker Deployment
 
-### Using Docker Compose
-
-```bash
-# Build and run the service
-docker-compose up --build
-
-# Run in detached mode
-docker-compose up -d
-```
-
-### Using Docker directly
 
 ```bash
 # Build the image
 docker build -t fastapi-caching-service .
 
-# Run the container
+# Run without persistent data (data lost on restart)
 docker run -p 8000:8000 fastapi-caching-service
+
+# Run with persistent data (data survives restarts)
+docker run -p 8000:8000 -v $(pwd):/app fastapi-caching-service
 ```
 
 ## Development
@@ -186,26 +218,6 @@ pytest --cov=.
 pytest tests/test_api.py
 ```
 
-### Environment Variables
-
-Create a `.env` file in the root directory:
-
-```env
-# Application settings
-APP_NAME=FastAPI Caching Service
-DEBUG=True
-HOST=0.0.0.0
-PORT=8000
-
-# Database settings
-DATABASE_URL=sqlite:///./cache.db
-# For PostgreSQL: postgresql://user:password@localhost/dbname
-
-# Cache settings
-CACHE_TTL=300
-CACHE_MAX_SIZE=1000
-```
-
 ## Key Implementation Details
 
 ### Caching Strategy
@@ -220,17 +232,3 @@ CACHE_MAX_SIZE=1000
 - **Pydantic**: Data validation and settings management
 - **Docker**: Containerization for deployment
 - **pytest**: Testing framework
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes with meaningful messages (`git commit -m 'Add caching optimization'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-### Code Standards
-- Follow PEP 8 style guidelines
-- Write clear and concise comments focusing on "why" not "how"
-- Add unit and integration tests for new features
-- Use meaningful commit messages in small, manageable chunks
