@@ -1,5 +1,4 @@
 """Tests for caching functionality"""
-import pytest
 from sqlmodel import Session, select
 from main import get_cached_result, CacheEntry
 

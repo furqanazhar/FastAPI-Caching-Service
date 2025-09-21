@@ -1,5 +1,4 @@
 """Integration tests"""
-import pytest
 from sqlmodel import Session, select
 from main import CacheEntry
 

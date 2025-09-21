@@ -1,8 +1,8 @@
 """Pytest configuration and shared fixtures"""
 import pytest
 from fastapi.testclient import TestClient
-from sqlmodel import SQLModel, create_engine, Session
-from main import app, Payload, CacheEntry
+from sqlmodel import SQLModel, create_engine
+from main import app
 
 # Create test database
 TEST_DATABASE_URL = "sqlite:///./test_cache.db"

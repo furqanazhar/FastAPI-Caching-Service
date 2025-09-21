@@ -1,5 +1,4 @@
 """Tests for transformer function"""
-import pytest
 from main import transformer_function
 
 class TestTransformerFunction:
